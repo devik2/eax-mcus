@@ -29,9 +29,11 @@ void gpio_setup_one(uint8_t port,uint8_t mode,uint8_t alt)
 				mod = S_GPI_PULL;
 				gpio_out(port,mode & PM_PU);
 			     } else mod = S_GPI_FLOAT;
+			     mode &= ~(PM_ALT|PM_OD); // icompat.w/ IN
 			     break;
 		case PM_OUT: mod = mode & PM_SPD50 ? S_GPO_OUT50 
-			     : mode & PM_SPD10 ? S_GPO_OUT10:S_GPO_OUT2; break;
+			     : mode & PM_SPD10 ? S_GPO_OUT10:S_GPO_OUT2; 
+			     break;
 	}
 	if (mode & PM_OD) mod |= S_GPO_OD;
 	if (mode & PM_ALT) mod |= S_GPO_ALT;
