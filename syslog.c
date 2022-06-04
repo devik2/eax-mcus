@@ -10,7 +10,7 @@
  #include <stdarg.h>
 #endif
 
-static uint16_t seq;
+//static uint16_t seq;
 //extern struct eth_iodef *eth;
 
 const char *syslog_hostname;
@@ -21,7 +21,7 @@ void syslog_udp(const char *s,int _sz)
 {
 	struct packet p;
 	memset(&p,0,sizeof(p));
-	p.ip.daddr = 0xffffffff;
+	p.ip.daddr = 0xffffffff; // broadcast for now TODO
 	memset(p.dst.addr,0xff,6);
 	p.ip.protocol = 17; // UDP
 

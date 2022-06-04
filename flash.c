@@ -1,6 +1,6 @@
 #include "cpu.h"
 #include <string.h>
-#include "eax_mpus/stm_util.h"
+#include "eax-mcus/stm_util.h"
 
 void flash_unlock()
 {
@@ -36,10 +36,13 @@ int flash_erase(uint32_t sno)
 	FLASH->CR |= FLASH_CR_STRT;
 	flash_wait();
 	FLASH->CR = 0;
+	/*
 	int i,err=0;
 	for (i=0;i<(1<<(PG_BITS-2));i++) 
 		if (pga[i]!=0xffffffff) err++;
-	return err;
+	return err; XXX: implement
+	*/
+	return 0;
 }
 
 #else
@@ -73,11 +76,16 @@ int flash_erase(uint32_t sno)
 		if (pga[i]!=0xffffffff) err++;
 	return err; XXX: implement
 	*/
+	return 0;
 }
 #endif
 void flash_write(uint16_t *addr,uint16_t val)
 {
-	FLASH->CR = FLASH_CR_PG|FLASH_CR_PSIZE_0;
+	FLASH->CR = FLASH_CR_PG
+#ifndef STM32F1
+		|FLASH_CR_PSIZE_0
+#endif
+		;
 	*addr = val;
 	__disable_irq();
 	flash_wait();
