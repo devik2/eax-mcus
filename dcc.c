@@ -1,4 +1,5 @@
 #include "cpu.h"
+#include "opts.h"
 #include <string.h>
 #ifdef USE_XPRINTF
  #include "xprintf.h"
